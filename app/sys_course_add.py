@@ -4,18 +4,17 @@ from app import app, LINK
 from requests import post
 import re, json, base64
 
-@app.route('/sys_article_add', methods=['POST'])
-def sys_article_add():
+@app.route('/sys_course_add', methods=['POST'])
+def sys_course_add():
 	x = request.form
 
 	req = {
-		'method': 'articles.add',
+		'method': 'courses.add',
 		'name': x['name'],
 		'category': int(x['category']),
-		'cont': x['cont'],
+		'author': x['author'],
 		'tags': [i.strip() for i in re.compile(r'[a-zA-Zа-яА-Я ]+').findall(x['tags'])],
 		'description': x['description'],
-		'priority': x['priority'] if 'priority' in x else 50,
 	}
 
 	if 'preview' in request.files:
@@ -31,4 +30,4 @@ def sys_article_add():
 
 	req = json.loads(req)
 
-	return redirect(LINK + str(req['id']))
+	return redirect(LINK + 'courses/' + str(req['id']))

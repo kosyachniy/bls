@@ -9,6 +9,8 @@ from json import dumps
 from random import randint
 from os import listdir, remove
 
+#from time import sleep
+
 generate = lambda length=32: ''.join([chr(randint(48, 123)) for i in range(length)])
 on = lambda x, y: all([i in x for i in y])
 
@@ -25,7 +27,15 @@ def load_image(url, data, adr=None, format='jpg', type='base64'):
 	if type == 'base64':
 		data = base64.b64decode(data)
 
-	id = adr if adr else max_image(url)
+	if adr:
+		id = adr
+
+		for i in listdir(url):
+			if str(adr) + '.' in i:
+				remove(url + '/' + i)
+	else:
+		id = max_image(url)
+
 	with open('%s/%d.%s' % (url, id, format), 'wb') as file:
 		file.write(data)
 
@@ -182,14 +192,11 @@ def process():
 
 			if 'photo' in x:
 				try:
-					i['photo'] = load_image('app/static/load/users', x['photo']) #, 'base64' if 'type_img' not in x else x['type_img']
+					load_image('app/static/load/users', x['photo'], id)
 
 				#Ошибка загрузки фотографии
 				except:
 					return '7'
-
-				else:
-					db['users'].save(i)
 
 			return '0'
 
@@ -238,6 +245,8 @@ def process():
 				for i in db['categories'].find({'parent': x['category']}):
 					category.append(i['id'])
 				category = {'category': {'$in': category}}
+
+			print(category)
 
 			courses = []
 			for i in db['courses'].find(category).sort('priority', -1)[0:count]:
@@ -307,11 +316,6 @@ def process():
 			db['courses'].save(query)
 
 			if 'preview' in x:
-				files = listdir('app/static/load/courses')
-				for i in files:
-					if str(x['id']) + '.' in i:
-						remove('app/static/load/courses/' + i)
-
 				try:
 					load_image('app/static/load/courses', x['preview'], x['id'], x['file'].split('.')[-1] if 'file' in x else None)
 
@@ -324,12 +328,11 @@ def process():
 #Добавление статьи
 		elif x['method'] == 'courses.add':
 			#Не все поля заполнены
-			if not on(x, ('name', 'category', 'cont', 'tags', 'description', 'priority')):
+			if not on(x, ('name', 'category', 'author', 'tags', 'description')):
 				return '3'
 
 			x['name'] = x['name'].strip()
 			x['description'] = x['description'].replace('\r\n', '').replace('\n', '').strip()
-			x['cont'] = x['cont'].strip()
 
 			try:
 				id = db['courses'].find().sort('id', -1)[0]['id'] + 1
@@ -338,7 +341,7 @@ def process():
 
 			query = {
 				'id': id,
-				'author': user,
+				'user': user,
 				'time': time.time(),
 				'status': 3, #!
 				'view': [user,],
@@ -347,7 +350,7 @@ def process():
 				'comment': [],
 			}
 
-			for i in ('name', 'category', 'cont', 'tags', 'description', 'priority'):
+			for i in ('name', 'category', 'author', 'tags', 'description'):
 				if i in x: query[i] = x[i]
 
 			db['courses'].insert(query)
@@ -377,6 +380,21 @@ def process():
 			#Несуществует такого человека
 			else:
 				return '4'
+
+#Получение пользователя
+		elif x['method'] == 'users.gets':
+			users = []
+
+			if 'sort' in x:
+				all_users = db['users'].find().sort('rating.' + str(x['sort']), -1)
+			else:
+				all_users = db['users'].find()
+
+			for i in all_users:
+				del i['_id']
+				users.append(i)
+			
+			return dumps(users)
 
 #Поиск
 		elif x['method'] == 'search':

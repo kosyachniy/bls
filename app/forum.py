@@ -11,7 +11,7 @@ def forum():
 
 	questions = []
 	for i, category in enumerate(categories):
-		if not category['parent'] and category['plus'] == 'article':
+		if category['parent'] and category['plus'] == 'course':
 			questions.append({
 				'url': category['url'],
 				'name': category['name'],
@@ -20,6 +20,8 @@ def forum():
 					'category': category['id']
 				}).text)
 			})
+
+	print(questions)
 
 	return render_template('forum.html',
 		title = 'Форум',

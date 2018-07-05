@@ -19,8 +19,8 @@ def index():
 		user = user,
 		preview = get_preview,
 
-		courses = load(post(LINK, json={'method': 'courses.gets'})),
-		questions = load(post(LINK, json={'method': 'questions.gets'})),
-		experts = load(post(LINK, json={'method': 'users.gets'})),
+		courses = loads(post(LINK, json={'method': 'courses.gets'}).text),
+		questions = loads(post(LINK, json={'method': 'questions.gets'}).text),
+		experts = loads(post(LINK, json={'method': 'users.gets'}).text),
 		news = None,
 	)

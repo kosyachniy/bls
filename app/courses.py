@@ -4,9 +4,9 @@ from app import app, LINK, get_preview
 from requests import post
 from json import loads
 
-@app.route('/cources')
-@app.route('/cources/<sub>')
-def cources(cat, sub=''):
+@app.route('/courses')
+@app.route('/courses/<sub>')
+def courses(sub=''):
 	categories = loads(post(LINK, json={'method': 'categories.gets'}).text)
 	user = loads(post(LINK, json={'method': 'users.get', 'id': session['id']}).text) if 'id' in session else {'id': 0, 'admin': 2}
 
@@ -15,7 +15,7 @@ def cources(cat, sub=''):
 	subcategory = 0
 	title = 'Курсы'
 	for x in categories:
-		if x['url'] == cat:
+		if x['url'] == 'courses':
 			title = x['name'] # Если подкатегория была удалена - останется основная
 			tags.append(x['name'])
 			category = x['id']
@@ -29,18 +29,18 @@ def cources(cat, sub=''):
 
 			break
 
-	cources = loads(post(LINK, json={'method': 'cources.gets', 'category': subcategory if subcategory else category}).text)
+	courses = loads(post(LINK, json={'method': 'courses.gets', 'category': subcategory if subcategory else category}).text)
 
-	return render_template('cources.html',
+	return render_template('courses.html',
 		title = title,
 		description = '',
 		tags = tags,
-		url = cat + '/' + sub,
+		url = 'courses/' + sub,
 		categories = categories,
 		user = user,
 		category = category,
 		subcategory = subcategory,
 		preview = get_preview,
 
-		cources = cources,
+		courses = courses,
 	)

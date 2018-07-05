@@ -1,15 +1,33 @@
 {% extends "main.html" %}
 {% block cont %}
 
+<style>
+img {
+	width: 100%;
+}
+</style>
+
 <h2 class="title2">Обновить аватарку</h2>
-<img src="/static/{% if user.photo %}load/users/{{ user.photo }}{% else %}photo{% endif %}.jpg"><br>
+<img src="{{ preview('users', user.id) }}"><br>
 
-<form action="avatar" method="post" enctype="multipart/form-data">
-	<input type="file" name="file">
-	<input type="submit" value="Обновить">
-</form>
+<form action="settings?url={{ url }}" method="post" enctype="multipart/form-data">
+	<input type="file" name="photo" class="photo" id="photo">
+	<label for="photo">Выбрать фотографию</label>
+	<script>
 
-<form action="settings?url={{ url }}" method="post">
+$('.photo').on('change', function() {
+	var file = this.value.split('\\');
+	file = file[file.length-1];
+
+	if ($('div').is('.u-files')) {
+		$('.u-files').html(file);
+	} else {
+		$('label').after('<div class="u-files">' + file + '</div>');
+	}
+});
+
+	</script>
+
 	<h2 class="title2">Личная информация</h2>
 	<input type="text" name="name" placeholder="Имя"{% if user.name %} value="{{ user.name }}"{% endif %}>
 	<input type="text" name="surname" placeholder="Фамилия"{% if user.surname %} value="{{ user.surname }}"{% endif %}>

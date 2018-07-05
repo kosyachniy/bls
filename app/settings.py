@@ -2,6 +2,7 @@ from flask import session, request, render_template
 from app import app, LINK, get_url
 
 from requests import post
+import base64
 
 @app.route('/settings', methods=['POST'])
 def settings():
@@ -10,9 +11,20 @@ def settings():
 	if 'token' not in session:
 		return render_template('message.html', cont='3')
 
-	req = {'cm': 'profile.settings', 'token': session['token']}
+	req = {
+		'method': 'profile.edit',
+		'token': session['token']
+	}
+
 	for i in ('name', 'surname', 'description'): #mail #password
-		if i in x: req[i] = x[i]
+		if i in x:
+			req[i] = x[i]
+
+	if 'photo' in request.files:
+		y = request.files['photo'].stream.read()
+		y = str(base64.b64encode(y))[2:-1]
+		req['photo'] = y
+		req['file'] = request.files['photo'].filename
 
 	req = post(LINK, json=req).text
 

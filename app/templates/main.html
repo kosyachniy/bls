@@ -10,8 +10,8 @@
 	<link rel ="shortcut icon" type="images/png" href="/static/favicon.png">
 
 	<meta name="author" content="Poloz Alexey (polozhev@mail.ru)">
-	<meta name="description" content="{% if description %}{{ description }}{% else %}Статейник: Статьи на различные темы, оригинальный контент, информативно и по сути.{% endif %}">
-	<meta name="keywords" content="{% if tags %}{% for i in tags %}{{ i }},{% endfor %}{% else %}Статейник,{% endif %}">
+	<meta name="description" content="{% if description %}{{ description }}{% else %}Открытые онлайн курсы на токенах. Смешанная система образования.{% endif %}">
+	<meta name="keywords" content="{% if tags %}{% for i in tags %}{{ i }},{% endfor %}{% else %}Онлайн курсы,смешанная система образования,курсы на токенах{% endif %}">
 
 	<link rel="stylesheet" type="text/css" href="/static/main.css">
 	<script src="/static/main_header.js"></script>
@@ -21,18 +21,18 @@
 <div class="u-header">
 	<div class="u-logo" onclick="change();">
 		<!-- <img src="/static/logo.svg"> -->
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 250">
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 250">
 			<defs>
 				<style>
-					.cls-1 {
-						font-size: 250px;
-						fill: #fff;
-						font-family: "Avenir Next";
-						font-weight: 700;
-					}
+.cls-1 {
+	font-size: 240px;
+	fill: #fff;
+	font-family: "Avenir Next";
+	font-weight: 700;
+}
 				</style>
 			</defs>
-			<text id="_Source_" data-name="{Source}" class="cls-1" x="-0.727" y="197.008">{Source}</text>
+			<text id="_BlendEdu_" data-name="{BlendEdu}" class="cls-1" x="3.273" y="197.008">{BlendEdu}</text>
 		</svg>
 	</div><div class="u-expand">
 		<div class="u-search">
@@ -57,7 +57,7 @@
 
 	{% if i.id == category %}
 		{% for j in categories if j.parent == i.id %}
-			<div onclick="location.href='/{{ i.url }}/{{ j.url }}'" class="u-sub{% if j.id == subcategory %} u-selected{% endif %}">{{ j.name }} <a href="/admin/add?i={% if j.id %}{{ j.id }}{% else %}{{ i.id }}{% endif %}" class="u-add">+</a></div>
+			<div onclick="location.href='/{{ i.url }}/{{ j.url }}'" class="u-sub{% if j.id == subcategory %} u-selected{% endif %}">{{ j.name }} <a href="/admin/add/{{ i.plus }}/?i={% if j.id %}{{ j.id }}{% else %}{{ i.id }}{% endif %}" class="u-add">+</a></div>
 		{% endfor %}
 	{% endif %}
 {% endfor %}

@@ -10,7 +10,7 @@ place('.u-notes', 3, 100, 12, 7, 850, 450);
 <a href="/courses"><div class="u-title">Курсы</div></a>
 
 <div class="u-notes">
-	{% for i in courses %}<a href="/{{ i.id }}"><div><div class="u-img" style="background-image: url({{ preview('articles', i.id) }}");"></div><div class="u-text">{{ i.name }}<p>{{ i.description }}</p></div></div></a>{% endfor %}
+	{% for i in courses %}<a href="/courses/{{ i.id }}"><div><div class="u-img" style="background-image: url({{ preview('courses', i.id) }}");"></div><div class="u-text">{{ i.name }}<p>{{ i.author }}</p></div></div></a>{% endfor %}
 </div>
 
 <br><br>
@@ -18,7 +18,7 @@ place('.u-notes', 3, 100, 12, 7, 850, 450);
 <a href="/forum"><div class="u-title">Вопросы</div></a>
 
 <div class="u-notes">
-	{% for i in questions %}<a href="/{{ i.id }}"><div><div class="u-text">{{ i.name }}<p>{{ i.description }}</p></div></div></a>{% endfor %}
+	{% for i in questions %}<a href="/forum/{{ i.id }}"><div><div class="u-text">{{ i.name }}<p>{{ i.description }}</p></div></div></a>{% endfor %}
 </div>
 
 <br><br>
@@ -26,7 +26,7 @@ place('.u-notes', 3, 100, 12, 7, 850, 450);
 <a href="/experts"><div class="u-title">Эксперты</div></a>
 
 <div class="u-notes">
-	{% for i in users %}<a href="/{{ i.id }}"><div><div class="u-img" style="background-image: url({{ preview('users', i.id) }}");"></div><div class="u-text">{{ i.surname }} {{ i.name }}<p>@{{ i.login }}</p></div></div></a>{% endfor %}
+	{% for i in experts %}<a href="/users/{{ i.id }}"><div><div class="u-img" style="background-image: url({{ preview('users', i.id) }}");"></div><div class="u-text">{{ i.surname }} {{ i.name }}<p>@{{ i.login }}</p></div></div></a>{% endfor %}
 </div>
 
 <br><br>

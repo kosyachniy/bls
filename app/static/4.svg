@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="250" viewBox="0 0 1300 250">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 240px;
+        fill: #fff;
+        font-family: "Avenir Next";
+        font-weight: 700;
+      }
+    </style>
+  </defs>
+  <text id="_BlendEdu_" data-name="{BlendEdu}" class="cls-1" x="3.273" y="197.008">{BlendEdu}</text>
+</svg>

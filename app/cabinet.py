@@ -1,5 +1,5 @@
 from flask import render_template, session, request, redirect
-from app import app, LINK
+from app import app, LINK, get_preview
 
 from requests import post
 from json import loads
@@ -18,6 +18,7 @@ def cabinet():
 			url = x if x else 'cabinet',
 			categories = categories,
 			user = user,
+			preview = get_preview,
 		)
 
 	else:

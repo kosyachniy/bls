@@ -46,5 +46,5 @@ from app import sys_question_add
 from app import forum
 from app import expert
 from app import experts
-from app import cource
-from app import cources
+from app import course
+from app import courses
